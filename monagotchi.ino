@@ -120,7 +120,7 @@ void sendToOpenClaw(String message) {
 }
 
 void pushPetStatus() {
-  String msg = "TamaPetchi status update - ";
+  String msg = "Monagotchi status update - ";
   msg += "Hunger:" + String(pet.hunger) + " ";
   msg += "Happy:" + String(pet.happiness) + " ";
   msg += "Health:" + String(pet.health) + " ";
@@ -136,7 +136,7 @@ void pushPetStatus() {
 
 void setup() {
   Serial.begin(115200);
-  Serial.println("ESP32 TamaPetchi LCD + Web + OpenClaw Starting...");
+  Serial.println("ESP32 Monagotchi LCD + Web + OpenClaw Starting...");
 
   // Initialize TFT display FIRST
   tft.init();
@@ -235,7 +235,7 @@ void setup() {
   // Clear screen for game
   tft.fillScreen(COLOR_BG);
 
-  Serial.println("ESP32 TamaPetchi Ready!");
+  Serial.println("ESP32 Monagotchi Ready!");
   Serial.println("LCD + Buttons + Web + OpenClaw");
   if (WiFi.status() == WL_CONNECTED) {
     Serial.print("Open browser to: http://");
@@ -252,7 +252,7 @@ void setup() {
   showMessage("Hello!");
 
   // Send boot notification to OpenClaw
-  sendToOpenClaw("TamaPetchi has booted up and is ready! Initial stats - Hunger:50 Happy:50 Health:80 Energy:100 Clean:80");
+  sendToOpenClaw("Monagotchi has booted up and is ready! Initial stats - Hunger:50 Happy:50 Health:80 Energy:100 Clean:80");
 }
 
 void loop() {
@@ -668,7 +668,7 @@ void handleRoot() {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ESP32 TamaPetchi</title>
+    <title>ESP32 Monagotchi</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -780,7 +780,7 @@ void handleRoot() {
 </head>
 <body>
     <div class="container">
-        <h1>🎮 TamaPetchi 🐾</h1>
+        <h1>🎮 Monagotchi 🐾</h1>
         
         <div class="pet-display">
             <div class="pet" id="pet-emoji">🐱</div>
@@ -1000,7 +1000,7 @@ void handleResetWeb() {
   pet.stateChangeTime = millis();
   lastAlertedState = "normal";
   showMessage("New Pet!");
-  sendToOpenClaw("TamaPetchi has been reset! New pet starting fresh.");
+  sendToOpenClaw("Monagotchi has been reset! New pet starting fresh.");
   server.send(200, "application/json", "{\"success\":true,\"message\":\"Reset!\"}");
 }
 
@@ -1023,7 +1023,7 @@ void handleButtons() {
 
     showMessage("New Pet!");
     Serial.println("Pet reset complete! Starting fresh.");
-    sendToOpenClaw("TamaPetchi has been reset via button! New pet starting fresh.");
+    sendToOpenClaw("Monagotchi has been reset via button! New pet starting fresh.");
 
     tft.fillScreen(COLOR_BG);
 
