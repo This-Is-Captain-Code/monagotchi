@@ -8,13 +8,13 @@ using namespace fs;
 #include <SPI.h>
 
 // WiFi credentials - CHANGE THESE TO YOUR WIFI!
-const char* ssid = "Airtel_SaintsUndone";
-const char* password = "IAMVENGEANCE";
+const char* ssid = "";
+const char* password = "";
 
 // ========== OPENCLAW CONFIG ==========
 // Replace 192.168.1.XXX with YOUR PC's local IP (run ipconfig on your PC)
 const char* openclawURL = "http://192.168.1.18:18789/hooks/agent";
-const char* hookToken = "tamapetchi-esp32-hook-secret";
+const char* hookToken = "";
 
 unsigned long lastOpenClawPush = 0;
 const unsigned long openclawPushInterval = 60000;  // Push status every 60 seconds
