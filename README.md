@@ -120,7 +120,61 @@ clawhub install buddyh/alexa-cli
 cd monagotchi/monagotchi-trader/scripts && npm install
 ```
 
-### 4. Configure OpenClaw
+### 4. Configure OpenClaw Gateway Webhook
+
+The ESP32 pushes status updates and alerts to your OpenClaw agent via the gateway's webhook endpoint (`POST /hooks/agent`). This is how the pet notifies your agent when it gets sick, hungry, or dies — so the agent can react (update Alexa, alert you on Telegram, etc).
+
+Add the `hooks` block to your `~/.openclaw/openclaw.json`:
+
+```json
+{
+  "hooks": {
+    "enabled": true,
+    "token": "tamapetchi-esp32-hook-secret",
+    "path": "/hooks",
+    "defaultSessionKey": "hook:monagotchi",
+    "allowRequestSessionKey": false,
+    "allowedSessionKeyPrefixes": ["hook:"]
+  }
+}
+```
+
+Then update the ESP32 sketch (`monagotchi.ino`) to point at your PC's local IP and match the token:
+
+```cpp
+// Replace 192.168.1.XXX with YOUR PC's local IP (run ipconfig/ifconfig)
+const char* openclawURL = "http://192.168.1.XXX:18789/hooks/agent";
+const char* hookToken = "tamapetchi-esp32-hook-secret";
+```
+
+The ESP32 sends these webhook events automatically:
+
+| Event | When | Example Message |
+|-------|------|-----------------|
+| Boot | ESP32 powers on | `"TamaPetchi has booted up and is ready! Initial stats - Hunger:50 Happy:50 Health:80 Energy:100 Clean:80"` |
+| Status push | Every 60 seconds | `"TamaPetchi status update - Hunger:45 Happy:47 Health:80 Energy:98 Clean:76 Age:3min State:normal Alive:yes"` |
+| Sick alert | Health drops below 30 | `"ALERT: TamaPetchi is sick! Health:25 Hunger:10 Clean:15. Needs healing!"` |
+| Hungry alert | Hunger drops below 20 | `"ALERT: TamaPetchi is hungry! Hunger:15. Please feed!"` |
+| Sleep alert | Energy drops below 20 | `"TamaPetchi fell asleep. Energy was low at 18."` |
+| Death alert | Health reaches 0 | `"ALERT: TamaPetchi has died! Age was 47 minutes. Press reset to start over."` |
+| Reset | Pet is reset via button or web | `"TamaPetchi has been reset! New pet starting fresh."` |
+
+Each webhook is a `POST` to `/hooks/agent` with this payload:
+
+```json
+{
+  "message": "ALERT: TamaPetchi is sick! Health:25 Hunger:10 Clean:15. Needs healing!",
+  "name": "TamaPetchi",
+  "deliver": true,
+  "channel": "telegram"
+}
+```
+
+The `deliver: true` and `channel: "telegram"` fields tell OpenClaw to forward the agent's response to your Telegram. The agent will use the monagotchi skills to decide what to do (check status, burn tokens, heal the pet, update the room environment, etc).
+
+**Security note:** Use a strong random token in production (`openssl rand -base64 32`). The example token above is just a placeholder. Make sure the token in the `.ino` file matches the one in `openclaw.json`.
+
+### 5. Configure OpenClaw Skills
 
 Add to `~/.openclaw/openclaw.json`:
 
@@ -172,7 +226,7 @@ Add the environment sync cron job:
 }
 ```
 
-### 5. Test
+### 6. Test
 
 Tell your OpenClaw agent: *"Feed my pet"*
 
