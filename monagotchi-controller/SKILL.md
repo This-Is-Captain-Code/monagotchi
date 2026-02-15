@@ -1,7 +1,11 @@
 ---
 name: monagotchi-controller
 description: Control the Monagotchi virtual pet running on an ESP32 with LCD display. Use when the owner wants to feed, play with, clean, put to sleep, heal, or check status of their pet. Every action except sleep and status costs $MONA tokens which get burned on-chain. Works with monagotchi-trader and monagotchi-environment skills.
-metadata: {"openclaw": {"emoji": "🐾", "requires": {"env": ["MONAGOTCHI_ESP32_IP"]}}}
+metadata:
+  openclaw:
+    emoji: "🐾"
+    env:
+      - MONAGOTCHI_ESP32_IP
 ---
 
 # Monagotchi Controller

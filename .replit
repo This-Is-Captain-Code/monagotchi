@@ -4,3 +4,26 @@ expertMode = true
 
 [nix]
 channel = "stable-25_05"
+
+[workflows]
+runButton = "Project"
+
+[[workflows.workflow]]
+name = "Project"
+mode = "parallel"
+author = "agent"
+
+[[workflows.workflow.tasks]]
+task = "workflow.run"
+args = "Project Info"
+
+[[workflows.workflow]]
+name = "Project Info"
+author = "agent"
+
+[[workflows.workflow.tasks]]
+task = "shell.exec"
+args = "echo \"=== Monagotchi ===\" && echo \"ESP32 firmware + OpenClaw skills\" && echo \"\" && echo \"Skills:\" && ls -d */SKILL.md 2>/dev/null | sed 's|/SKILL.md||' && echo \"\" && echo \"Trader script:\" && ls monagotchi-trader/scripts/monagotchi-trader.mjs 2>/dev/null && echo \"\" && echo \"This project is meant to be flashed to an ESP32 via Arduino IDE.\" && echo \"The OpenClaw skills are ready to symlink into ~/.openclaw/skills/\""
+
+[workflows.workflow.metadata]
+outputType = "console"

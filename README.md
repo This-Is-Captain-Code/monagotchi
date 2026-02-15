@@ -58,7 +58,7 @@ Runs on an ESP32 + Waveshare 1.69" (240×280) TFT display + 5 physical buttons.
 
 **`monagotchi-controller/`** — ESP32 HTTP API. Checks pet status, decides which action to take, enforces the rule: burn tokens first, then execute.
 
-**`nadfun-trader/`** — On-chain operations. Checks $MONA balance, burns tokens for pet actions via ERC-20 transfer to dead address. Uses ethers.js.
+**`monagotchi-trader/`** — On-chain operations. Checks $MONA balance, burns tokens for pet actions via ERC-20 transfer to dead address. Uses ethers.js.
 
 **`monagotchi-environment/`** — Alexa smart home bridge. Maps pet state to room lights, temperature, and voice announcements via [`alexacli`](https://clawhub.ai/buddyh/alexa-cli). Runs on every action and on a 5-minute cron.
 
@@ -110,14 +110,14 @@ git clone https://github.com/YOUR_USERNAME/monagotchi.git
 
 # Symlink skills so OpenClaw finds them
 ln -s monagotchi/monagotchi-controller monagotchi-controller
-ln -s monagotchi/nadfun-trader nadfun-trader
+ln -s monagotchi/monagotchi-trader monagotchi-trader
 ln -s monagotchi/monagotchi-environment monagotchi-environment
 
 # Install alexa-cli dependency
 clawhub install buddyh/alexa-cli
 
 # Install trader script dependencies
-cd monagotchi/nadfun-trader/scripts && npm install
+cd monagotchi/monagotchi-trader/scripts && npm install
 ```
 
 ### 4. Configure OpenClaw
@@ -134,7 +134,7 @@ Add to `~/.openclaw/openclaw.json`:
           "MONAGOTCHI_ESP32_IP": "192.168.1.XXX"
         }
       },
-      "nadfun-trader": {
+      "monagotchi-trader": {
         "enabled": true,
         "env": {
           "MONAGOTCHI_TOKEN_ADDRESS": "0xYOUR_TOKEN_ADDRESS",
@@ -193,10 +193,10 @@ monagotchi/
 ├── monagotchi.ino                            # ESP32 firmware
 ├── monagotchi-controller/
 │   └── SKILL.md                              # OpenClaw skill: ESP32 pet API
-├── nadfun-trader/
+├── monagotchi-trader/
 │   ├── SKILL.md                              # OpenClaw skill: $MONA token burns
 │   ├── scripts/
-│   │   ├── nadfun-trader.mjs                 # Burn + balance script
+│   │   ├── monagotchi-trader.mjs             # Burn + balance script
 │   │   └── package.json
 │   └── references/
 │       └── nadfun-contracts.md               # Monad contract addresses

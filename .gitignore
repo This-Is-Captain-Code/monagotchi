@@ -1,0 +1,8 @@
+node_modules/
+.cache/
+.local/
+*.o
+*.d
+*.elf
+*.bin
+.DS_Store

@@ -1,7 +1,15 @@
 ---
 name: monagotchi-trader
 description: Manage $MONA tokens on nad.fun (Monad blockchain) for Monagotchi pet interactions. Use when you need to burn tokens for pet actions, check token balance, or get token info. Every pet action (feed, play, clean, heal) requires burning $MONA tokens through this skill. Works with monagotchi-controller.
-metadata: {"openclaw": {"emoji": "🪙", "requires": {"bins": ["node"], "env": ["MONAGOTCHI_TOKEN_ADDRESS", "MONAD_PRIVATE_KEY"]}}}
+metadata:
+  openclaw:
+    emoji: "🪙"
+    requires:
+      bins: ["node"]
+    env:
+      - MONAGOTCHI_TOKEN_ADDRESS
+      - MONAD_PRIVATE_KEY
+      - MONAD_RPC_URL
 ---
 
 # Nad.fun Monagotchi Trader

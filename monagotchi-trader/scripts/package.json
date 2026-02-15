@@ -1,0 +1,10 @@
+{
+  "name": "monagotchi-trader",
+  "version": "1.0.0",
+  "type": "module",
+  "description": "Burn $MONA tokens on Monad for Monagotchi pet actions",
+  "main": "monagotchi-trader.mjs",
+  "dependencies": {
+    "ethers": "^6.13.0"
+  }
+}

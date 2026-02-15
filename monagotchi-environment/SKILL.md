@@ -1,7 +1,13 @@
 ---
 name: monagotchi-environment
 description: Map Monagotchi pet state to real-world environment via Alexa smart home devices. Use after any pet action or status check to adjust room lights, temperature, and announce status. Requires the alexa-cli skill (buddyh/alexa-cli). Works with monagotchi-controller.
-metadata: {"openclaw": {"emoji": "🏠", "requires": {"bins": ["alexacli"], "env": ["MONAGOTCHI_ALEXA_DEVICE"]}}}
+metadata:
+  openclaw:
+    emoji: "🏠"
+    requires:
+      bins: ["alexacli"]
+    env:
+      - MONAGOTCHI_ALEXA_DEVICE
 ---
 
 # Monagotchi Environment Controller
