@@ -146,27 +146,27 @@ Then update the ESP32 sketch (`monagotchi.ino`) to point at your PC's local IP a
 ```cpp
 // Replace 192.168.1.XXX with YOUR PC's local IP (run ipconfig/ifconfig)
 const char* openclawURL = "http://192.168.1.XXX:18789/hooks/agent";
-const char* hookToken = "tamapetchi-esp32-hook-secret";
+const char* hookToken = "monagotchi-esp32-hook-secret";
 ```
 
 The ESP32 sends these webhook events automatically:
 
 | Event | When | Example Message |
 |-------|------|-----------------|
-| Boot | ESP32 powers on | `"TamaPetchi has booted up and is ready! Initial stats - Hunger:50 Happy:50 Health:80 Energy:100 Clean:80"` |
-| Status push | Every 60 seconds | `"TamaPetchi status update - Hunger:45 Happy:47 Health:80 Energy:98 Clean:76 Age:3min State:normal Alive:yes"` |
-| Sick alert | Health drops below 30 | `"ALERT: TamaPetchi is sick! Health:25 Hunger:10 Clean:15. Needs healing!"` |
-| Hungry alert | Hunger drops below 20 | `"ALERT: TamaPetchi is hungry! Hunger:15. Please feed!"` |
-| Sleep alert | Energy drops below 20 | `"TamaPetchi fell asleep. Energy was low at 18."` |
-| Death alert | Health reaches 0 | `"ALERT: TamaPetchi has died! Age was 47 minutes. Press reset to start over."` |
-| Reset | Pet is reset via button or web | `"TamaPetchi has been reset! New pet starting fresh."` |
+| Boot | ESP32 powers on | `"Monagotchi has booted up and is ready! Initial stats - Hunger:50 Happy:50 Health:80 Energy:100 Clean:80"` |
+| Status push | Every 60 seconds | `"Monagotchi status update - Hunger:45 Happy:47 Health:80 Energy:98 Clean:76 Age:3min State:normal Alive:yes"` |
+| Sick alert | Health drops below 30 | `"ALERT: Monagotchi is sick! Health:25 Hunger:10 Clean:15. Needs healing!"` |
+| Hungry alert | Hunger drops below 20 | `"ALERT: Monagotchi is hungry! Hunger:15. Please feed!"` |
+| Sleep alert | Energy drops below 20 | `"Monagotchi fell asleep. Energy was low at 18."` |
+| Death alert | Health reaches 0 | `"ALERT: Monagotchi has died! Age was 47 minutes. Press reset to start over."` |
+| Reset | Pet is reset via button or web | `"Monagotchi has been reset! New pet starting fresh."` |
 
 Each webhook is a `POST` to `/hooks/agent` with this payload:
 
 ```json
 {
-  "message": "ALERT: TamaPetchi is sick! Health:25 Hunger:10 Clean:15. Needs healing!",
-  "name": "TamaPetchi",
+  "message": "ALERT: Monagotchi is sick! Health:25 Hunger:10 Clean:15. Needs healing!",
+  "name": "Monagotchi",
   "deliver": true,
   "channel": "telegram"
 }
