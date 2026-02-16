@@ -6,6 +6,8 @@ A physical Tamagotchi on an ESP32 that's powered by a memecoin on [nad.fun](http
 
 Feed it, play with it, heal it — each interaction burns $MONA on-chain. But neglect it and your room lights go red, the temperature climbs, and Alexa warns you. Take care of it and everything goes back to calm.
 
+ca: https://nad.fun/tokens/0x2CB31c268819EE133De378A3A2E087F0b0eC7777
+
 ## How It Works
 
 ```
