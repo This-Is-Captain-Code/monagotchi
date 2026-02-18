@@ -46,6 +46,7 @@ Runs on an ESP32 + Waveshare 1.69" (240×280) TFT display + 5 physical buttons.
 - **OpenClaw integration** — pushes status alerts to your AI agent
 
 #### Hardware
+![Monagotchi](https://raw.githubusercontent.com/This-Is-Captain-Code/monagotchi/main/monagotchi_v1_page-0001.jpg)
 
 | Component | Detail |
 |-----------|--------|
