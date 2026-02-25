@@ -32,6 +32,13 @@ Pet dies
     → Stays that way until you reset
 ```
 
+```
+AUSD sent to treasury
+    → ausd-watcher detects Transfer event
+    → Logs wallet, amount, tx hash to ausd_log.json
+    → Pet state updated with AUSD_FEED event
+```
+
 ## What's In This Repo
 
 ### ESP32 Firmware (`monagotchi.ino`)
@@ -65,6 +72,8 @@ Runs on an ESP32 + Waveshare 1.69" (240×280) TFT display + 5 physical buttons.
 
 **`monagotchi-environment/`** — Alexa smart home bridge. Maps pet state to room lights, temperature, and voice announcements via [`alexacli`](https://clawhub.ai/buddyh/alexa-cli). Runs on every action and on a 5-minute cron.
 
+**`monagotchi-ausd/`** — AUSD (Agora USD) integration. Watches for AUSD transfers to the Monagotchi treasury on Monad. Logs each sender's wallet, amount, and tx hash for Moltiverse/Agora tracking.
+
 ### Token Economy
 
 | Action | $MONA Burned | Pet Effect |
@@ -75,6 +84,7 @@ Runs on an ESP32 + Waveshare 1.69" (240×280) TFT display + 5 physical buttons.
 | Heal | 5,000 | Health → 100 |
 | Sleep/Wake | free | Toggle rest (energy recovers) |
 | Status | free | Check stats |
+| Send AUSD | any amount | AUSD_FEED event logged |
 
 ### Environment Mapping
 
@@ -115,12 +125,14 @@ git clone https://github.com/YOUR_USERNAME/monagotchi.git
 ln -s monagotchi/monagotchi-controller monagotchi-controller
 ln -s monagotchi/monagotchi-trader monagotchi-trader
 ln -s monagotchi/monagotchi-environment monagotchi-environment
+ln -s monagotchi/monagotchi-ausd monagotchi-ausd
 
 # Install alexa-cli dependency
 clawhub install buddyh/alexa-cli
 
-# Install trader script dependencies
+# Install dependencies for each skill
 cd monagotchi/monagotchi-trader/scripts && npm install
+cd monagotchi/monagotchi-ausd/scripts && npm install
 ```
 
 ### 4. Configure OpenClaw Gateway Webhook
@@ -205,6 +217,13 @@ Add to `~/.openclaw/openclaw.json`:
           "MONAGOTCHI_ALEXA_DEVICE": "Bedroom"
         }
       },
+      "monagotchi-ausd": {
+        "enabled": true,
+        "env": {
+          "TREASURY_ADDRESS": "0xYOUR_TREASURY_WALLET",
+          "MONAD_RPC_URL": "https://monad-mainnet.g.alchemy.com/v2/YOUR_KEY"
+        }
+      },
       "alexa-cli": {
         "enabled": true
       }
@@ -229,7 +248,28 @@ Add the environment sync cron job:
 }
 ```
 
-### 6. Test
+### 6. Start the AUSD Watcher
+
+```bash
+cd monagotchi-ausd/scripts
+node ausd-watcher.mjs
+```
+
+The watcher listens for AUSD transfers to your treasury and appends each one to `ausd_log.json`:
+
+```json
+[
+  {
+    "wallet": "0xabc...",
+    "amount": "10000000",
+    "amountFormatted": "10.00",
+    "txHash": "0xdef...",
+    "timestamp": "2025-01-01T00:00:00.000Z"
+  }
+]
+```
+
+### 7. Test
 
 Tell your OpenClaw agent: *"Feed my pet"*
 
@@ -257,8 +297,13 @@ monagotchi/
 │   │   └── package.json
 │   └── references/
 │       └── nadfun-contracts.md               # Monad contract addresses
-└── monagotchi-environment/
-    └── SKILL.md                              # OpenClaw skill: Alexa environment
+├── monagotchi-environment/
+│   └── SKILL.md                              # OpenClaw skill: Alexa environment
+└── monagotchi-ausd/
+    ├── SKILL.md                              # OpenClaw skill: AUSD treasury watcher
+    └── scripts/
+        ├── ausd-watcher.mjs                  # Watches AUSD transfers, logs to ausd_log.json
+        └── package.json
 ```
 
 ## Requirements
