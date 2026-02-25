@@ -1,0 +1,11 @@
+{
+  "name": "monagotchi-ausd-scripts",
+  "version": "1.0.0",
+  "type": "module",
+  "scripts": {
+    "watch": "node ausd-watcher.mjs"
+  },
+  "dependencies": {
+    "ethers": "^6.0.0"
+  }
+}
